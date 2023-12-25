@@ -1,0 +1,73 @@
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin: 20px; /* Añade margen alrededor del contador */
+}
+
+.countdown-wrapper {
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  width: 80%; /* Ancho del contador */
+  max-width: 600px; /* Ancho máximo del contador */
+  margin: auto; /* Centrar horizontalmente */
+}
+
+.digital-clock {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+.time-section {
+  display: flex;
+  align-items: center;
+  margin: 10px 0; /* Ajusta el margen entre los elementos */
+  flex: 1; /* Ocupa el espacio disponible */
+  flex-direction: column; /* Coloca los elementos en columna */
+  text-align: center; /* Centra el texto */
+}
+
+.time {
+  font-size: 48px;
+  font-weight: bold;
+  padding: 5px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+}
+
+.label {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-top: 5px; /* Ajusta el margen superior */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../source/Rick.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Fija la imagen de fondo */
+  height: 100vh;
+  /* Otros estilos si los necesitas */
+}
+
+/* Media queries para hacer que el contenido sea responsive */
+@media screen and (max-width: 768px) {
+  .countdown-wrapper {
+    width: 90%;
+  }
+
+  .time {
+    font-size: 36px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,96 @@
+.App {
+  text-align: center;
+  position: relative; 
+  
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&family=Silkscreen&display=swap');
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.titulo-fijo {
+  font-family: 'Rubik Doodle Shadow';
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  font-size: 24px;
+  z-index: 1000;
+  width: 100%;
+  text-align: center;
+  /* Otros estilos según sea necesario */
+}
+
+.button-container {
+  position: fixed;
+  bottom: 20px; /* Distancia desde la parte inferior */
+  left: 50%; /* Centrar horizontalmente */
+  transform: translateX(-50%); /* Centrar horizontalmente */
+  display: flex;
+  justify-content: space-between; /* Espacio entre botones */
+  width: 300px; /* Ancho del contenedor de botones */
+  z-index: 1000; /* Coloca los botones por encima del contenido */
+}
+
+
+.button-style {
+  width: 120px; /* Ancho fijo */
+  height: 40px; /* Alto fijo */
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+/* Estilos de botones */
+.button-style-previous,
+.button-style-next {
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+/* Estilos hover para todos los botones */
+.button-style:hover,
+.button-style-previous:hover,
+.button-style-next:hover {
+  background-color: navy;
+}
