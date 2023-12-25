@@ -7,13 +7,18 @@
 }
 
 .countdown-wrapper {
+  position: fixed; /* Fija la posición del contador */
+  top: 100px; /* Ajusta la posición verticalmente desde la parte superior */
+  left: 50%; /* Centra horizontalmente el contador */
+  transform: translateX(-50%); /* Centra exactamente el contador horizontalmente */
   background-color: #333;
   padding: 10px;
   border-radius: 8px;
   width: 80%; /* Ancho del contador */
   max-width: 600px; /* Ancho máximo del contador */
-  margin: auto; /* Centrar horizontalmente */
+  /* Resto de tu estilo */
 }
+
 
 .digital-clock {
   display: flex;

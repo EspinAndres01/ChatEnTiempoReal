@@ -4,9 +4,51 @@ import Countdown from './components/Countdown';
 import Rick from './source/Rick.mp3';
 import Gravity from './source/Gravity.mp3';
 import { io } from 'socket.io-client';
-import { LiMensaje, UlMensajes } from './ui-components';
+import { UlMensajes, LiMensaje, LiMensajePropio } from './ui-components';
+import styled from 'styled-components';
 
 const socket = io('https://provando.fly.dev');
+
+const InputMensaje = styled.input`
+  width: calc(100% - 60px);
+  padding: 10px;
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+  margin-bottom: 10px;
+`;
+
+const ChatContainer = styled.div`
+  width: 600px; /* Ancho fijo del contenedor de chat */
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: rgba(70, 67, 66, 0.8);
+  word-wrap: break-word; /* Romper palabras largas */
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const AudioButtons = styled(ButtonContainer)`
+  justify-content: center;
+`;
+
+const AudioButton = styled.button`
+  padding: 10px;
+  background-color: dodgerblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: royalblue;
+  }
+`;
 
 function App() {
   const targetDate = '2024-01-01T00:00:00Z';
@@ -16,15 +58,24 @@ function App() {
   const audioFiles = useMemo(() => [Rick, Gravity], []);
 
   const [isConnected, setIsConnected] = useState(false);
-  const [nuevoMensaje,setNuevoMensaje]=useState('');
-  const [mensajes,setMensajes]=useState([]);
+  const [nuevoMensaje, setNuevoMensaje] = useState('');
+  const [mensajes, setMensajes] = useState([]);
+
   const enviarMensaje = () => {
-    socket.emit('chat_mensaje', {
-      usuario: socket.id,
-      mensaje: nuevoMensaje
-    });
-  }
-  
+    if (nuevoMensaje.trim() !== '') {
+      socket.emit('chat_mensaje', {
+        usuario: socket.id,
+        mensaje: nuevoMensaje,
+      });
+      setNuevoMensaje(''); // Limpiar el input después de enviar el mensaje
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && nuevoMensaje.trim() !== '') {
+      enviarMensaje();
+    }
+  };
 
   const playAudio = () => {
     const audio = audioRef.current;
@@ -32,14 +83,14 @@ function App() {
       audio.pause();
       setIsPlaying(false);
     } else {
-      audio.play().catch(error => {
+      audio.play().catch((error) => {
         console.error('Error al reproducir el audio:', error);
       });
       setIsPlaying(true);
     }
   };
 
-  const changeSong = direction => {
+  const changeSong = (direction) => {
     let newIndex = direction === 'next' ? currentSong + 1 : currentSong - 1;
     if (newIndex < 0) {
       newIndex = audioFiles.length - 1;
@@ -52,55 +103,81 @@ function App() {
   useEffect(() => {
     socket.on('connect', () => setIsConnected(true));
     socket.on('chat_mensaje', (data) => {
-      setMensajes(mensajes => [...mensajes, data]);
+      setMensajes((mensajes) => {
+        const existMessage = mensajes.some(
+          (mensaje) =>
+            mensaje.usuario === data.usuario && mensaje.mensaje === data.mensaje
+        );
+        if (!existMessage) {
+          return [...mensajes, data];
+        }
+        return mensajes;
+      });
     });
 
-    
     const audio = audioRef.current;
     audio.src = audioFiles[currentSong];
     audio.load();
     if (isPlaying) {
-      audio.play().catch(error => {
+      audio.play().catch((error) => {
         console.error('Error al reproducir el audio:', error);
       });
     }
     return () => {
       socket.off('connect');
       socket.off('chat_message');
-    }
-  }, [currentSong, audioFiles, isPlaying,mensajes]);
+    };
+  }, [currentSong, audioFiles, isPlaying]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <h1 className="titulo-fijo">CUENTA REGRESIVA PARA AÑO NUEVO</h1>
-      <h2>{isConnected ? 'CONECTADO' : 'NO CONECTADO'}</h2>
-      <UlMensajes>
-        {mensajes.map(mensaje => (
-          <LiMensaje>{mensaje.usuario}: {mensaje.mensaje}</LiMensaje>
-        ))}
-      </UlMensajes>
-      <input
-        type="text"
-        onChange={e => setNuevoMensaje(e.target.value)}
-      />
-      <button onClick={enviarMensaje}>Enviar</button>
       <Countdown targetDate={targetDate} />
-      <audio ref={audioRef} style={{ display: 'none' }} />
+      <h2>{isConnected ? 'CONECTADO' : 'NO CONECTADO'}</h2>
 
-      <div className="button-container">
-        <button onClick={() => changeSong('previous')} className="button-style-previous">
-          Anterior
-        </button>
-        <button onClick={playAudio} className="button-style">
-          {isPlaying ? 'Pausar audio' : 'Reproducir audio'}
-        </button>
-        <button onClick={() => changeSong('next')} className="button-style-next">
-          Siguiente
-        </button>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+        <ChatContainer>
+          <UlMensajes>
+            {mensajes.map((mensaje) => (
+              mensaje.usuario === socket.id ? (
+                <LiMensajePropio key={mensaje.id}>
+                  {mensaje.usuario}: {mensaje.mensaje}
+                </LiMensajePropio>
+              ) : (
+                <LiMensaje key={mensaje.id}>
+                  {mensaje.usuario}: {mensaje.mensaje}
+                </LiMensaje>
+              )
+            ))}
+          </UlMensajes>
+        </ChatContainer>
+
+        <InputMensaje
+          type="text"
+          value={nuevoMensaje}
+          onChange={(e) => setNuevoMensaje(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Escribe tu mensaje..."
+        />
+        <ButtonContainer style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+          <button onClick={enviarMensaje}>Enviar</button>
+        </ButtonContainer>
+        <AudioButtons style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+          <AudioButton onClick={() => changeSong('previous')}>
+            Anterior
+          </AudioButton>
+          <AudioButton onClick={playAudio}>
+            {isPlaying ? 'Pausar audio' : 'Reproducir audio'}
+          </AudioButton>
+          <AudioButton onClick={() => changeSong('next')}>
+            Siguiente
+          </AudioButton>
+        </AudioButtons>
       </div>
+
+      <audio ref={audioRef} style={{ display: 'none' }} />
     </div>
   );
-
 }
 
 export default App;
