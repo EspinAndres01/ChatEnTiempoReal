@@ -6,7 +6,7 @@ import Gravity from './source/Gravity.mp3';
 import { io } from 'socket.io-client';
 import { LiMensaje, UlMensajes } from './ui-components';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://provando.fly.dev');
 
 function App() {
   const targetDate = '2024-01-01T00:00:00Z';
