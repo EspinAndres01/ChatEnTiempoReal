@@ -9,6 +9,13 @@ import styled from 'styled-components';
 
 const socket = io('https://provando.fly.dev');
 
+const ConnectionStatus = styled.h2`
+  color: ${({ isConnected }) => (isConnected ? 'limegreen' : 'lightcoral')};
+`;
+
+const CountdownContainer = styled.div`
+  margin-bottom: 50px;
+`;
 const InputMensaje = styled.input`
   width: calc(100% - 60px);
   padding: 10px;
@@ -18,23 +25,23 @@ const InputMensaje = styled.input`
 `;
 
 const ChatContainer = styled.div`
-  width: 600px; /* Ancho fijo del contenedor de chat */
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto 10px; /* Márgenes superior e inferior de 10px y centrado horizontal */
   max-height: 180px;
   overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   background-color: rgba(70, 67, 66, 0.8);
-  word-wrap: break-word; /* Romper palabras largas */
+  word-wrap: break-word;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
-`;
-
-const AudioButtons = styled(ButtonContainer)`
   justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
 `;
 
 const AudioButton = styled.button`
@@ -75,7 +82,7 @@ function App() {
     if (e.key === 'Enter' && nuevoMensaje.trim() !== '') {
       enviarMensaje();
     }
-  };
+  };  
 
   const playAudio = () => {
     const audio = audioRef.current;
@@ -130,12 +137,19 @@ function App() {
   }, [currentSong, audioFiles, isPlaying]);
 
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200vh' }}>
       <h1 className="titulo-fijo">CUENTA REGRESIVA PARA AÑO NUEVO</h1>
-      <Countdown targetDate={targetDate} />
-      <h2>{isConnected ? 'CONECTADO' : 'NO CONECTADO'}</h2>
-
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+      <div className="countdown-container">
+        <CountdownContainer>
+          <Countdown targetDate={targetDate} />
+        </CountdownContainer>
+      </div>
+      
+      
+      <div className="chat-container">
+      <ConnectionStatus isConnected={isConnected}>
+        {isConnected ? 'CONECTADO' : 'NO CONECTADO'}
+      </ConnectionStatus>;
         <ChatContainer>
           <UlMensajes>
             {mensajes.map((mensaje) => (
@@ -151,7 +165,7 @@ function App() {
             ))}
           </UlMensajes>
         </ChatContainer>
-
+        
         <InputMensaje
           type="text"
           value={nuevoMensaje}
@@ -159,10 +173,8 @@ function App() {
           onKeyDown={handleKeyPress}
           placeholder="Escribe tu mensaje..."
         />
-        <ButtonContainer style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-          <button onClick={enviarMensaje}>Enviar</button>
-        </ButtonContainer>
-        <AudioButtons style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        
+        <ButtonContainer>
           <AudioButton onClick={() => changeSong('previous')}>
             Anterior
           </AudioButton>
@@ -172,9 +184,9 @@ function App() {
           <AudioButton onClick={() => changeSong('next')}>
             Siguiente
           </AudioButton>
-        </AudioButtons>
+        </ButtonContainer>
       </div>
-
+      
       <audio ref={audioRef} style={{ display: 'none' }} />
     </div>
   );

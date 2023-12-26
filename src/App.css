@@ -1,9 +1,11 @@
 .App {
-  text-align: center;
-  position: relative; 
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 20px;
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -52,45 +54,33 @@
   z-index: 1000;
   width: 100%;
   text-align: center;
-  /* Otros estilos según sea necesario */
 }
 
-.button-container {
-  position: fixed;
-  bottom: 20px; /* Distancia desde la parte inferior */
-  left: 50%; /* Centrar horizontalmente */
-  transform: translateX(-50%); /* Centrar horizontalmente */
+.InputMensaje {
+  width: calc(100% - 20px); /* Reduce el espacio para el borde */
+  padding: 10px;
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box; /* Incluye el borde y el relleno en el ancho total */
+}
+
+.countdown-container {
+  width: 100%;
+  max-width: 90%;
+  
+}
+
+
+.chat-container {
+  width: 100%;
+  max-width: 90%; /* Reduce un poco el ancho para dispositivos pequeños */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(70, 67, 66, 0.8);
   display: flex;
-  justify-content: space-between; /* Espacio entre botones */
-  width: 300px; /* Ancho del contenedor de botones */
-  z-index: 1000; /* Coloca los botones por encima del contenido */
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-
-.button-style {
-  width: 120px; /* Ancho fijo */
-  height: 40px; /* Alto fijo */
-  background-color: blue;
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-/* Estilos de botones */
-.button-style-previous,
-.button-style-next {
-  padding: 10px 20px;
-  background-color: blue;
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin: 0 5px;
-}
-
-/* Estilos hover para todos los botones */
-.button-style:hover,
-.button-style-previous:hover,
-.button-style-next:hover {
-  background-color: navy;
-}

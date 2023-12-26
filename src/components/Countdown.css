@@ -1,42 +1,33 @@
-.countdown {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  margin: 20px; /* Añade margen alrededor del contador */
-}
-
 .countdown-wrapper {
-  position: fixed; /* Fija la posición del contador */
-  top: 100px; /* Ajusta la posición verticalmente desde la parte superior */
-  left: 50%; /* Centra horizontalmente el contador */
-  transform: translateX(-50%); /* Centra exactamente el contador horizontalmente */
+  width: 90%;
+  max-width: 90%;
+  position: relative;
+  top: 0;
+  left: 0;
+  transform: none;
+  margin: 50px auto;
   background-color: #333;
   padding: 10px;
   border-radius: 8px;
-  width: 80%; /* Ancho del contador */
-  max-width: 600px; /* Ancho máximo del contador */
-  /* Resto de tu estilo */
 }
-
 
 .digital-clock {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  flex-wrap: wrap;
 }
 
 .time-section {
   display: flex;
   align-items: center;
-  margin: 10px 0; /* Ajusta el margen entre los elementos */
-  flex: 1; /* Ocupa el espacio disponible */
-  flex-direction: column; /* Coloca los elementos en columna */
-  text-align: center; /* Centra el texto */
+  margin: 10px 0;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
 }
 
 .time {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: bold;
   padding: 5px;
   background-color: #fff;
@@ -45,10 +36,10 @@
 }
 
 .label {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   color: #fff;
-  margin-top: 5px; /* Ajusta el margen superior */
+  margin-top: 5px;
 }
 
 body {
@@ -57,22 +48,50 @@ body {
   background-image: url('../source/Rick.gif');
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Fija la imagen de fondo */
+  background-attachment: fixed;
   height: 100vh;
-  /* Otros estilos si los necesitas */
 }
 
-/* Media queries para hacer que el contenido sea responsive */
 @media screen and (max-width: 768px) {
   .countdown-wrapper {
     width: 90%;
+    max-width: 90%;
   }
 
   .time {
-    font-size: 36px;
+    font-size: 24px;
   }
 
   .label {
-    font-size: 12px;
+    font-size: 10px;
+  }
+}
+
+/* Estilos adicionales para el chat */
+.chat-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.chat-container > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 600px) {
+  .chat-container {
+    width: 90%;
+    max-width: 90%;
   }
 }
