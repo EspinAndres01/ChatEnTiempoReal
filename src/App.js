@@ -3,6 +3,7 @@ import './App.css';
 import Countdown from './components/Countdown';
 import Rick from './source/Rick.mp3';
 import Gravity from './source/Gravity.mp3';
+import Notification from './source/Notification.mp3';
 import { io } from 'socket.io-client';
 import { UlMensajes, LiMensaje, LiMensajePropio } from './ui-components';
 import styled from 'styled-components';
@@ -60,6 +61,7 @@ const AudioButton = styled.button`
 function App() {
   const targetDate = '2024-01-01T00:00:00Z';
   const audioRef = useRef(null);
+  const notificationAudioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(0);
   const audioFiles = useMemo(() => [Rick, Gravity], []);
@@ -74,6 +76,12 @@ function App() {
         usuario: socket.id,
         mensaje: nuevoMensaje,
       });
+      // Reproducir el sonido de notificación
+      if (notificationAudioRef.current) {
+        notificationAudioRef.current.play().catch((error) => {
+          console.error('Error al reproducir el sonido de notificación:', error);
+        });
+      }
       setNuevoMensaje(''); // Limpiar el input después de enviar el mensaje
     }
   };
@@ -121,7 +129,6 @@ function App() {
         return mensajes;
       });
     });
-
     const audio = audioRef.current;
     audio.src = audioFiles[currentSong];
     audio.load();
@@ -186,7 +193,7 @@ function App() {
           </AudioButton>
         </ButtonContainer>
       </div>
-      
+      <audio ref={notificationAudioRef} src={Notification} style={{ display: 'none' }} />
       <audio ref={audioRef} style={{ display: 'none' }} />
     </div>
   );
