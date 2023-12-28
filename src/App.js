@@ -7,6 +7,7 @@ import Notification from './source/Notification.mp3';
 import { io } from 'socket.io-client';
 import { UlMensajes, LiMensaje, LiMensajePropio } from './ui-components';
 import styled from 'styled-components';
+import MemesSounds from './components/memesSounds';
 
 const socket = io('https://provando.fly.dev');
 
@@ -151,7 +152,7 @@ function App() {
           <Countdown targetDate={targetDate} />
         </CountdownContainer>
       </div>
-      
+      <MemesSounds />
       
       <div className="chat-container">
       <ConnectionStatus isConnected={isConnected}>
